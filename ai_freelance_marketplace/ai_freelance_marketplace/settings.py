@@ -87,8 +87,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ai_freelance_marketplace3',
-        'USER': 'postgres',
-        'PASSWORD': 'postgresql',
+        'USER': 'User_name',
+        'PASSWORD': 'Your_password',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -140,7 +140,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 SITE_ID = 1
 
-LOGIN_URL = '/accounts/login/'  # Adjust this to the actual login URL of your app
+LOGIN_URL = '/accounts/login/' 
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'home'
 
@@ -171,8 +171,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.example.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'arbiya@gmail.com'
-EMAIL_HOST_PASSWORD = 'arbiya'
+EMAIL_HOST_USER = 'your_eamil'
+EMAIL_HOST_PASSWORD = 'your_password'
 
 
 

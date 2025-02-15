@@ -83,10 +83,6 @@ This project is set up to be deployed on platforms like Heroku. Make sure to set
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 
-## Contact
-
-If you have any questions, feel free to reach out to Habiba Farzana at [habibafarzana764@gmail.com].
-
 To use this README:
 
 1. Replace `your-username` in the clone URL with your actual GitHub username.

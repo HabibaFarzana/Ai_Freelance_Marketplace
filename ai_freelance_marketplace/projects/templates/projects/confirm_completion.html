@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">Confirm Project Completion</h2>
+                </div>
+                <div class="card-body">
+                    <h3>{{ project.title }}</h3>
+                    <div class="alert alert-info">
+                        <h4 class="alert-heading">Project Details</h4>
+                        <p><strong>Freelancer:</strong> {{ project.hired_freelancer.username }}</p>
+                        <p><strong>Completed on:</strong> {{ project.completed_at|date }}</p>
+                        <p><strong>Current Work Details:</strong></p>
+                        <p>{{ project.current_work_details }}</p>
+                    </div>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="confirmCheck" required>
+                            <label class="form-check-label" for="confirmCheck">
+                                I confirm that the project has been completed satisfactorily
+                            </label>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success">Confirm Completion</button>
+                            <a href="{% url 'project_detail' project.id %}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        border: none;
+    }
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+    }
+    .alert-info {
+        background-color: #cff4fc;
+        border-color: #b6effb;
+    }
+    .btn-success {
+        background-color: #198754;
+        border-color: #198754;
+    }
+    .btn-success:hover {
+        background-color: #157347;
+        border-color: #146c43;
+    }
+    .form-check-input:checked {
+        background-color: #198754;
+        border-color: #198754;
+    }
+</style>
+{% endblock %}
+

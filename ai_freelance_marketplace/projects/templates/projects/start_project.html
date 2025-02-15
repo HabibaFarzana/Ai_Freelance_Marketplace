@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Start Project: {{ project.title }}</h2>
+            <div class="alert alert-info">
+                <p>You're about to start working on this project. Once started:</p>
+                <ul>
+                    <li>The project status will be updated to "Just Started"</li>
+                    <li>The start time will be recorded</li>
+                    <li>You can begin submitting updates on your progress</li>
+                </ul>
+            </div>
+            <form method="post" action="{% url 'start_project' project.id %}">
+                {% csrf_token %}
+                <div class="form-group mb-3">
+                    <label for="initial_details">Initial Project Notes (Optional)</label>
+                    <textarea id="initial_details" name="initial_details" class="form-control" rows="4" placeholder="Add any initial notes or planning details..."></textarea>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-success btn-sm" title="Start working on this project">Start Project</button>
+                    <a href="{% url 'project_detail' project.id %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

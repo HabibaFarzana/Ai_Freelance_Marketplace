@@ -1,0 +1,20 @@
+{% load static %}
+
+<div class="message {% if message.sender == request.user %}sent{% else %}received{% endif %}" data-message-id="{{ message.id }}">
+    <div class="message-content">
+        <p>{{ message.content }}</p>
+        <small>{{ message.timestamp|date:"M d, Y H:i" }}</small>
+    </div>
+    <div class="message-actions">
+        <button class="btn btn-sm btn-outline-secondary reaction-button">😊</button>
+        {% if message.sender == request.user %}
+            <button class="btn btn-sm btn-outline-danger delete-message">🗑️</button>
+        {% endif %}
+    </div>
+    <div class="message-reactions">
+        {% for reaction in message.reactions.all %}
+            <span class="badge bg-light text-dark">{{ reaction.reaction }} {{ reaction.user.username }}</span>
+        {% endfor %}
+    </div>
+</div>
+

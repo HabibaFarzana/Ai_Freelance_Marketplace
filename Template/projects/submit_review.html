@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">Review for {{ project.title }}</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_rating" class="form-label">Rating</label>
+                            <div class="rating-input">
+                                {% for i in "12345"|make_list %}
+                                <input type="radio" name="rating" value="{{ forloop.counter }}" id="star{{ forloop.counter }}" required>
+                                <label for="star{{ forloop.counter }}">
+                                    <i class="far fa-star"></i>
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_comment" class="form-label">Comment</label>
+                            {{ form.comment }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .rating-input {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+    }
+
+    .rating-input input {
+        display: none;
+    }
+
+    .rating-input label {
+        cursor: pointer;
+        padding: 5px;
+        font-size: 24px;
+    }
+
+    .rating-input label:hover,
+    .rating-input label:hover ~ label,
+    .rating-input input:checked ~ label {
+        color: #ffc107;
+    }
+
+    .rating-input label:hover i,
+    .rating-input label:hover ~ label i,
+    .rating-input input:checked ~ label i {
+        content: "\f005";
+        font-weight: 900;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ratingInputs = document.querySelectorAll('.rating-input input');
+    const stars = document.querySelectorAll('.rating-input label i');
+
+    ratingInputs.forEach((input, index) => {
+        input.addEventListener('change', () => {
+            stars.forEach((star, starIndex) => {
+                if (starIndex <= index) {
+                    star.classList.remove('far');
+                    star.classList.add('fas');
+                } else {
+                    star.classList.remove('fas');
+                    star.classList.add('far');
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock %}
+

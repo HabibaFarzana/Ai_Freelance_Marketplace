@@ -1,0 +1,47 @@
+delete.html
+{% extends 'base.html' %}
+
+{% block title %}Delete Project{% endblock %}
+
+{% block content %}
+<style>
+    .confirmation-container {
+        text-align: center;
+        padding: 50px;
+    }
+    .confirmation-text {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    .btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 1rem;
+        text-decoration: none;
+        margin: 5px;
+    }
+    .btn-danger {
+        background-color: #dc3545;
+        color: #fff;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        color: #fff;
+    }
+    .btn:hover {
+        opacity: 0.9;
+    }
+</style>
+
+<div class="confirmation-container">
+    <p class="confirmation-text">
+        Are you sure you want to delete the project <strong>"{{ project.title }}"</strong>?
+    </p>
+    <form method="POST" action="{% url 'delete_project' project.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+        <a href="{% url 'project_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

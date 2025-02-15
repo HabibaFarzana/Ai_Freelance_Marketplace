@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    {% if freelancer.profile_picture %}
+                        <img src="{{ freelancer.profile_picture.url }}" alt="Profile Picture" class="img-fluid rounded-circle mb-3">
+                    {% endif %}
+                    <h2 class="card-title">{{ freelancer.username }}</h2>
+                    <p class="text-muted">{{ profile.working_profession }}</p>
+                    
+                    <div class="mb-3">
+                        <h5>Skills</h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for skill in profile.get_skills_list %}
+                                <span class="badge bg-primary">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h5>Statistics</h5>
+                        <p><strong>Completed Projects:</strong> {{ completed_projects }}</p>
+                        <div class="rating-display">
+                            <strong>Average Rating:</strong>
+                            <div class="stars">
+                                {% for i in "12345"|make_list %}
+                                    {% if forloop.counter <= average_rating %}
+                                        <i class="fas fa-star text-warning"></i>
+                                    {% else %}
+                                        <i class="far fa-star text-warning"></i>
+                                    {% endif %}
+                                {% endfor %}
+                                <span class="ms-2">{{ average_rating|floatformat:1 }} / 5.0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if request.user.is_authenticated and request.user.user_type == 'client' and project %}
+                        <div class="mb-3">
+                            <form method="post" action="{% url 'hire_freelancer' project.id freelancer.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary w-100">
+                                    Hire for "{{ project.title }}"
+                                </button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="col-md-8">
+                    <div class="mb-4">
+                        <h4>About</h4>
+                        <p>{{ profile.description }}</p>
+                    </div>
+                    
+                    {% if suitability_reasons %}
+                        <div class="mb-4">
+                            <h4>Why This Freelancer?</h4>
+                            <ul class="list-group">
+                                {% for reason in suitability_reasons %}
+                                    <li class="list-group-item">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        {{ reason }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="mb-4">
+                        <h4>Reviews</h4>
+                        {% if reviews %}
+                            <div class="list-group">
+                                {% for review in reviews %}
+                                    <div class="list-group-item">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6>{{ review.project.title }}</h6>
+                                            <div class="stars">
+                                                {% for i in "12345"|make_list %}
+                                                    {% if forloop.counter <= review.rating %}
+                                                        <i class="fas fa-star text-warning"></i>
+                                                    {% else %}
+                                                        <i class="far fa-star text-warning"></i>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <p class="mb-1">{{ review.comment }}</p>
+                                        <small class="text-muted">By {{ review.reviewer.username }} on {{ review.created_at|date }}</small>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p>No reviews yet</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4>Current Bids</h4>
+                        {% if current_bids %}
+                            <div class="list-group">
+                                {% for bid in current_bids %}
+                                    <div class="list-group-item">
+                                        <h6>{{ bid.project.title }}</h6>
+                                        <p class="mb-1">Bid Amount: ${{ bid.amount }}</p>
+                                        <small class="text-muted">{{ bid.created_at|date }}</small>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p>No current bids</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .badge {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+    
+    .list-group-item {
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+    }
+    
+    .list-group-item:first-child {
+        border-top: none;
+    }
+    
+    .list-group-item:last-child {
+        border-bottom: none;
+    }
+
+    .rating-display {
+        margin-bottom: 1rem;
+    }
+
+    .stars {
+        display: inline-block;
+    }
+
+    .stars i {
+        margin-right: 2px;
+    }
+</style>
+{% endblock %}
+

@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+
+{% block title %}FlexiBrain{% endblock %}
+
+{% block content %}
+<style>
+    /* General Styling */
+    body {
+        font-family: 'Roboto', Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        color: #333;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    /* "Create a New Project" Button */
+    .btn-success {
+        background-color: #021707;
+        color: #fff;
+        font-size: 1rem;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    /* Project Cards */
+    .project-card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .project-card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        color: #48063a;
+        font-weight: bold;
+    }
+
+    .card-subtitle {
+        font-size: 1rem;
+        color: #6c757d;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        font-size: 1rem;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    .btn-primary {
+        background-color: #48063a;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #e325e6;
+    }
+
+    .no-projects {
+        text-align: center;
+        color: #888;
+        font-size: 1.2rem;
+        padding: 20px;
+    }
+
+    /* Pagination */
+    .pagination {
+        margin-top: 20px;
+    }
+
+    .page-link {
+        color: #48063a;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px 15px;
+        margin: 0 5px;
+        transition: all 0.3s ease;
+    }
+
+    .page-link:hover {
+        background-color: #48063a;
+        color: #fff;
+    }
+
+    .page-item.active .page-link {
+        background-color: #48063a;
+        color: #fff;
+        border: none;
+    }
+    .project-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+    .project-category {
+        margin-bottom: 30px;
+    }
+    .category-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #333;
+    }
+    .project-card {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 20px;
+        transition: transform 0.3s ease;
+    }
+    .project-card:hover {
+        transform: translateY(-5px);
+    }
+    .project-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #2c3e50;
+    }
+    .project-description {
+        font-size: 14px;
+        color: #7f8c8d;
+    }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    {% if user_type == 'client' and user.user_type == 'client' %}
+    <h1>Available Projects</h1>
+    <a href="{% url 'create_project' %}" class="btn btn-success">Create a New Project</a>
+    {% endif %}
+</div>
+
+<div class="row">
+    {% for project in projects %}
+    <div class="col-md-6 mb-4">
+        <div class="card project-card">
+            <div class="card-body">
+                <h5 class="card-title">{{ project.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Budget: ${{ project.budget }}</h6>
+                <p class="card-text">{{ project.description|truncatewords:30 }}</p>
+                <p class="card-text"><small class="text-muted">Posted by: {{ project.client.username }}</small></p>
+                <a href="{% url 'project_detail' project.id %}" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    </div>
+    
+    {% empty %}
+    <div class="col-12">
+        <p class="no-projects">No projects available at the moment.</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% if is_paginated %}
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+        <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+        </li>
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+<div class="project-list">
+    {% regroup projects by category as category_list %}
+    {% for category in category_list %}
+        <div class="project-category">
+            <h2 class="category-title">{{ category.grouper }}</h2>
+            {% for project in category.list %}
+                <div class="project-card">
+                    <h3 class="project-title">{{ project.title }}</h3>
+                    <p class="project-description">{{ project.description|truncatewords:20 }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

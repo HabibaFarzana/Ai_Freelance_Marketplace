@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="logout-container" style="
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;">
+        
+        <div class="logout-box" style="
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 350px;">
+            
+            <h1 style="color: #333; margin-bottom: 1rem;">Sign Out</h1>
+            <p style="color: #666; font-size: 16px; margin-bottom: 1.5rem;">Are you sure you want to sign out?</p>
+            
+            <form method="post" action="{% url 'account_logout' %}">
+                {% csrf_token %}
+                {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                {% endif %}
+                <button type="submit" style="
+                    display: inline-block;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    color: white;
+                    background-color: #e74c3c;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease;
+                    width: 100%;
+                    margin-bottom: 1rem;">Sign Out</button>
+            </form>
+
+            <div class="menu" style="margin-top: 15px;">
+                <a href="{% url 'dashboard' %}" style="
+                    text-decoration: none;
+                    color: #3498db;
+                    font-weight: bold;
+                    margin: 10px;">Go Back</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

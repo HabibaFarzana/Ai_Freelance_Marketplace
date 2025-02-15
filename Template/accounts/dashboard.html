@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AI Freelance Marketplace</title>
+    <style>
+        /* Base styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f6f9;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        /* Dashboard styles */
+        .dashboard-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .project-card {
+            background-color: #fff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .project-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        .project-description {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-bottom: 1rem;
+        }
+        .project-status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status-completed {
+            background-color: #e1f5fe;
+            color: #0288d1;
+        }
+        .status-in-progress {
+            background-color: #fff9c4;
+            color: #fbc02d;
+        }
+        .user-info {
+            background-color: #fff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        .user-info h2, .user-info h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        .user-info p {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="dashboard-title">
+            {% if user.user_type == 'freelancer' %}
+                My Completed Projects
+            {% else %}
+                My Posted Projects
+            {% endif %}
+        </h1>
+        <div class="project-grid">
+            {% for project in recent_projects %}
+                <div class="project-card">
+                    <h3 class="project-title">{{ project.title }}</h3>
+                    <p class="project-description">{{ project.description|truncatewords:20 }}</p>
+                    <span class="project-status {% if project.status == 'completed' %}status-completed{% else %}status-in-progress{% endif %}">
+                        {{ project.status|title }}
+                    </span>
+                </div>
+            {% empty %}
+                <p>No projects found.</p>
+            {% endfor %}
+        </div>
+
+        <div class="user-info">
+            <h2>User Information</h2>
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+
+            {% if user.user_type == 'freelancer' %}
+                <h3>Freelancer Profile</h3>
+                <p><strong>Skills:</strong> {{ profile.skills }}</p>
+                <p><strong>Experience:</strong> {{ profile.experience }}</p>
+            {% else %}
+                <h3>Client Profile</h3>
+                <p><strong>Company:</strong> {{ profile.company }}</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

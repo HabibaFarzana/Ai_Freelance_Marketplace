@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">{{ user.username }}</h2>
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="img-fluid rounded-circle mb-3">
+                    {% endif %}
+                    <p><strong>Full Name:</strong> {{ user.full_name }}</p>
+                    <p><strong>Location:</strong> {{ user.location }}</p>
+                    <p><strong>Profession:</strong> {{ profile.working_profession }}</p>
+                    <p><strong>Average Rating:</strong> {{ avg_rating }} / 5.0</p>
+                    <p><strong>Completed Projects:</strong> {{ completed_projects.count }}</p>
+                    <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title">About Me</h3>
+                    <p>{{ user.bio }}</p>
+                    <h4>Skills</h4>
+                    <p>{{ profile.skills }}</p>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title">Completed Projects</h3>
+                    <ul class="list-group">
+                        {% for project in completed_projects %}
+                            <li class="list-group-item">
+                                <h5>{{ project.title }}</h5>
+                                <p>{{ project.description|truncatewords:30 }}</p>
+                                <small class="text-muted">Completed on: {{ project.completed_at|date }}</small>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">No completed projects yet.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Ratings and Reviews</h3>
+                    {% for rating in ratings %}
+                        <div class="mb-3">
+                            <h5>{{ rating.project.title }}</h5>
+                            <p>Rating: {{ rating.score }} / 5</p>
+                            <p>{{ rating.comment }}</p>
+                            <small class="text-muted">By: {{ rating.rater.username }} on {{ rating.created_at|date }}</small>
+                        </div>
+                        {% if not forloop.last %}<hr>{% endif %}
+                    {% empty %}
+                        <p>No ratings yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

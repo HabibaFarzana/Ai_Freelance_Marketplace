@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ profile_user.username }}'s Profile{% endblock %}
+
+{% block content %}
+
+
+<style>
+    .profile-picture {
+        width: 250px;
+        height: 250px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #007bff;
+        margin-bottom: 20px;
+    }
+    .profile-details {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4 text-center">
+            {% if profile_user.profile_picture %}
+                <img src="{{ profile_user.profile_picture.url }}" 
+                     alt="{{ profile_user.username }}'s profile picture"
+                     class="profile-picture">
+            {% else %}
+                <img src="{% static 'images/default_profile.png' %}" 
+                     alt="Default profile picture" 
+                     class="profile-picture">
+            {% endif %}
+
+            <h2>{{ profile_user.username }}'s Profile</h2>
+        </div>
+        <div class="col-md-8">
+            <div class="profile-details">
+                <h3>Personal Information</h3>
+                <p><strong>Full Name:</strong> {{ profile_user.get_full_name }}</p>
+                <p><strong>Username:</strong> {{ profile_user.username }}</p>
+                <p><strong>Email:</strong> {{ profile_user.email }}</p>
+                <p><strong>Location:</strong> {{ profile_user.location|default:"Not specified" }}</p>
+                <p><strong>Interests:</strong> {{ profile_user.interests|default:"No interests listed" }}</p>
+                <p><strong>Bio:</strong> {{ profile_user.bio|default:"No bio available" }}</p>
+
+                <h3>Professional Details</h3>
+                <p><strong>User Type:</strong> {{ profile_user.get_user_type_display }}</p>
+                
+                {% if profile_user.user_type == 'freelancer' and profile %}
+                    <h4>Freelancer Information</h4>
+                    <p><strong>Working Profession:</strong> {{ profile.working_profession|default:"Not specified" }}</p>
+                    <p><strong>Skills:</strong> 
+                        {% if profile.skills %}
+                            {{ profile.skills }}
+                        {% else %}
+                            No skills listed
+                        {% endif %}
+                    </p>
+                    <p><strong>Description:</strong> {{ profile.description|default:"No description" }}</p>
+                {% endif %}
+
+                {% if profile_user.user_type == 'client' and profile %}
+                    <h4>Client Information</h4>
+                    <p><strong>Company Name:</strong> {{ profile.company_name|default:"Not specified" }}</p>
+                    <p><strong>Description:</strong> {{ profile.description|default:"No description" }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+  
+</div>
+{% endblock %}

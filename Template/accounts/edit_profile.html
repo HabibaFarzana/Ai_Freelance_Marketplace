@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container max-w-3xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-bold text-gray-900">Edit Profile</h1>
+            <div>
+            <a href="{% url 'profile_view' %}" class="text-sm text-gray-600 hover:text-gray-900">Back to Profile</a>
+            </div>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            
+            <!-- User Information -->
+            <div class="space-y-4">
+                <!-- <h2 class="text-lg font-bold text-gray-900">Basic Information</h2> -->
+                {% for field in user_form %}
+                    <div class="form-group">
+                        {{ field|as_crispy_field }}
+                        {% if field.help_text %}
+                            <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Freelancer/Client Specific Information -->
+            <div class="border-t border-gray-200 pt-6 space-y-4">
+                <h2 class="text-lg font-medium text-gray-900">
+                    {% if user.user_type == 'freelancer' %}Freelancer{% else %}Client{% endif %} Information
+                </h2>
+
+                {% for field in profile_form %}
+                    <div class="form-group">
+                        {{ field|as_crispy_field }}
+                        {% if field.help_text %}
+                            <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200">
+                <a href="{% url 'profile_view' %}" class="btn-cancel">
+                    Cancel
+                </a>
+                <button type="submit" class="btn-submit">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+        display: block;
+        font-size: 20px;
+        font-weight: bold;
+        color: #374151;
+        margin-bottom: 0.5rem;
+    }
+    
+    textarea {
+        min-height: 100px;
+        transition: height 0.2s ease;
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.375rem;
+    }
+    
+    textarea.resize-none {
+        min-height: 60px;
+        resize: none;
+    }
+    
+    /* Hide duplicate labels from crispy forms */
+    .asteriskField {
+        display: none;
+    }
+    
+    /* Custom file input styling */
+    input[type="file"] {
+        border: 1px solid #e5e7eb;
+        border-radius: 0.375rem;
+        padding: 0.5rem;
+        width: 100%;
+        cursor: pointer;
+        background-color: white;
+    }
+    
+    input[type="file"]::-webkit-file-upload-button {
+        background: #f3f4f6;
+        border: 1px solid #d1d5db;
+        border-radius: 0.375rem;
+        padding: 0.25rem 0.75rem;
+        margin-right: 1rem;
+        cursor: pointer;
+    }
+    
+    input[type="file"]::-webkit-file-upload-button:hover {
+        background: #e5e7eb;
+    }
+
+    /* Button styles */
+    .btn-submit {
+        background-color: #6b46c1;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        font-weight: 500;
+        font-size: 0.875rem;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .btn-submit:hover {
+        background-color: #553c9a;
+    }
+
+    .btn-cancel {
+        background-color: white;
+        color: #4b5563;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        font-weight: 500;
+        font-size: 0.875rem;
+        border: 1px solid #d1d5db;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        text-decoration: none;
+    }
+
+    .btn-cancel:hover {
+        background-color: #f3f4f6;
+    }
+
+    /* Input field styling */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.375rem;
+        background-color: white;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    textarea:focus {
+        outline: none;
+        border-color: #6b46c1;
+        box-shadow: 0 0 0 2px rgba(107, 70, 193, 0.2);
+    }
+</style>
+
+{% endblock %}

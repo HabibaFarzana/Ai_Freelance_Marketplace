@@ -1,0 +1,11 @@
+<!-- projects/templates/projects/submit_bid.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Submit Bid for {{ project.title }}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Submit Bid</button>
+</form>
+{% endblock %}

@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Registered Users{% endblock %}
+
+{% block content %}
+<style>
+    .user-list-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .search-filter-section {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .search-filter-section input,
+    .search-filter-section select {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .user-card {
+        display: flex;
+        align-items: center;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+    .user-card:hover {
+        transform: scale(1.02);
+    }
+
+    .user-profile-img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-right: 2px solid #dee2e6;
+    }
+
+    .user-info {
+        flex-grow: 1;
+        padding: 15px;
+    }
+
+    .user-info h5 {
+        margin-bottom: 5px;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .user-info .user-type {
+        color: #6c757d;
+        margin-bottom: 10px;
+        font-style: italic;
+    }
+
+    .user-info p {
+        color: #666;
+        margin-bottom: 15px;
+    }
+
+    .view-profile-btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .view-profile-btn:hover {
+        background-color: #0056b3;
+        color: white;
+    }
+
+    .no-users {
+        text-align: center;
+        color: #6c757d;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .search-filter-section {
+            flex-direction: column;
+        }
+
+        .search-filter-section input,
+        .search-filter-section select {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .user-card {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .user-profile-img {
+            width: 100%;
+            height: 250px;
+            border-right: none;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .user-info {
+            width: 100%;
+            padding: 15px;
+        }
+    }
+</style>
+
+<div class="container user-list-container">
+    <!-- <h2 class="mb-4 text-center">Registered Users</h2> -->
+    
+    <div class="search-filter-section">
+        <input type="text" id="searchInput" placeholder="Search by username" class="form-control mr-2">
+        <select id="userTypeFilter" class="form-control">
+            <option value="">All User Types</option>
+            <option value="client">Clients</option>
+            <option value="freelancer">Freelancers</option>
+        </select>
+    </div>
+
+    <div id="userList">
+        {% for user in users %}
+            <div class="user-card user-item" 
+                 data-username="{{ user.username|lower }}" 
+                 data-skills="{{ user.skills|lower|default:'' }}"
+                 data-usertype="{{ user.user_type|lower }}">
+                {% if user.profile_picture and user.profile_picture.url %}
+                    <img src="{{ user.profile_picture.url }}" class="user-profile-img" alt="{{ user.username }}">
+                {% else %}
+                    <img src="{% static 'images/default_profile.png' %}" class="user-profile-img" alt="{{ user.username }}">
+                {% endif %}
+                <div class="user-info">
+                    <h5>{{ user.username }}</h5>
+                    <div class="user-type">{{ user.get_user_type_display }}</div>
+                    <!-- <p>Skills: {{ user.skills|default:"No skills specified" }}</p> -->
+                    <a href="{% url 'user_profile' user.id %}" class="view-profile-btn">View Profile</a>
+                </div>
+            </div>
+        {% empty %}
+            <div class="no-users">
+                <p>No other users found.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const userTypeFilter = document.getElementById('userTypeFilter');
+    const userItems = document.querySelectorAll('.user-item');
+
+    function filterUsers() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const selectedUserType = userTypeFilter.value.toLowerCase();
+
+        userItems.forEach(item => {
+            const username = item.dataset.username;
+            const skills = item.dataset.skills;
+            const userType = item.dataset.usertype;
+
+            const matchesSearch = username.includes(searchTerm) || skills.includes(searchTerm);
+            const matchesUserType = selectedUserType === '' || userType === selectedUserType;
+
+            if (matchesSearch && matchesUserType) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    searchInput.addEventListener('input', filterUsers);
+    userTypeFilter.addEventListener('change', filterUsers);
+});
+</script>
+{% endblock %}

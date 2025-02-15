@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="update-project-container">
+        <h2 class="text-center mb-4">Update Project: {{ project.title }}</h2>
+        <form method="post" class="update-project-form">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <label for="{{ form.title.id_for_label }}">Project Title</label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <div class="text-danger">{{ form.title.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-group mb-3">
+                <label for="{{ form.description.id_for_label }}">Project Description</label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <div class="text-danger">{{ form.description.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-group mb-3">
+                <label for="{{ form.budget.id_for_label }}">Budget ($)</label>
+                {{ form.budget }}
+                {% if form.budget.errors %}
+                    <div class="text-danger">{{ form.budget.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-group mb-3">
+                <label for="{{ form.deadline.id_for_label }}">Deadline</label>
+                {{ form.deadline }}
+                {% if form.deadline.errors %}
+                    <div class="text-danger">{{ form.deadline.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-group mb-3">
+                <label for="{{ form.required_skills.id_for_label }}">Required Skills</label>
+                {{ form.required_skills }}
+                <small class="form-text text-muted">Enter skills separated by commas (e.g., Java, Spring, MySQL)</small>
+                {% if form.required_skills.errors %}
+                    <div class="text-danger">{{ form.required_skills.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-group mb-3">
+                <label for="{{ form.status.id_for_label }}">Status</label>
+                {{ form.status }}
+                {% if form.status.errors %}
+                    <div class="text-danger">{{ form.status.errors }}</div>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Update Project</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .update-project-container {
+        background-color: #f9f9f9;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    .update-project-form label {
+        font-weight: bold;
+        color: #555;
+    }
+    .update-project-form input,
+    .update-project-form textarea,
+    .update-project-form select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+    .update-project-form button {
+        background-color: #48063a;
+        padding: 12px;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+    .update-project-form button:hover {
+        background-color: #360429;
+    }
+</style>
+{% endblock %}
+

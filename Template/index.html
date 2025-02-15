@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlexiBrain</title>
+    <link rel="icon" type="image/png" href="{% static 'images/icon1.png' %}">
+    <style>
+
+        /* Navigation styles */
+nav {
+    background: linear-gradient(to right, #1a202c, #2d3748);
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    position: relative;
+    z-index: 1000;
+}
+
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    position: relative;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+}
+
+.nav-logo span {
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: white;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1001;
+}
+
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 2px 0;
+    transition: all 0.3s ease;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s;
+}
+
+.nav-links a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #1a202c;
+        flex-direction: column;
+        padding: 1rem;
+        width: 100%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-links.active {
+        display: flex !important;
+    }
+
+    .nav-links a {
+        width: 100%;
+        text-align: center;
+        padding: 0.75rem;
+    }
+
+    .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+}
+
+@media (min-width: 769px) {
+    .nav-links {
+        display: flex !important;
+    }
+}
+        
+        /* Base styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .min-h-screen {
+            min-height: 100vh;
+        }
+        .flex {
+            display: flex;
+        }
+        .flex-col {
+            flex-direction: column;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Navigation styles */
+        nav {
+            background: linear-gradient(to right, #1a202c, #2d3748);
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+        }
+        .nav-logo img {
+            width: 50px;
+            height: 50px;
+            margin-right: 0.75rem;
+        }
+        .nav-logo span {
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+        .nav-links {
+            display: none;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.25rem;
+            transition: background-color 0.3s;
+        }
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hero section styles */
+        .hero-section {
+            background: linear-gradient(to bottom right, #1a202c, #4a5568, #6b46c1);
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+        }
+        .hero-content h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+        .hero-content p {
+            font-size: 1.25rem;
+            max-width: 48rem;
+            margin: 0 auto 2rem;
+            animation: fadeInUp 1s ease-out 0.3s;
+            animation-fill-mode: both;
+        }
+        .hero-button {
+            display: inline-block;
+            background-color: #d53f8c;
+            color: white;
+            font-weight: bold;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-size: 1.125rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            animation: fadeInUp 1s ease-out 0.6s;
+            animation-fill-mode: both;
+        }
+        .hero-button:hover {
+            background-color: #b83280;
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        /* Trusted by section styles */
+        .trusted-by {
+            background-color: #f7fafc;
+            padding: 4rem 0;
+        }
+        .trusted-by h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 2rem;
+        }
+        .trusted-logos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+        }
+        .trusted-logo {
+            width: 10rem;
+            height: 5rem;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            transition: transform 0.3s ease-in-out;
+        }
+        .trusted-logo:hover {
+            transform: scale(1.05);
+        }
+        .trusted-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        /* Features section styles */
+        .features {
+            background-color: white;
+            padding: 4rem 0;
+        }
+        .features h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 2rem;
+        }
+        .features-grid {
+            display: grid;
+            gap: 2rem;
+        }
+        .feature-card {
+            background-color: #f7fafc;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+        .feature-card:hover {
+            transform: translateY(-0.5rem);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .feature-description {
+            color: #4a5568;
+        }
+
+        /* Footer styles */
+        footer {
+            background: linear-gradient(to right, #2d3748, #1a202c);
+            color: white;
+            padding: 2rem 0;
+        }
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .footer-links {
+            margin-top: 1rem;
+        }
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover {
+            color: #d53f8c;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive styles */
+        @media (min-width: 768px) {
+            .nav-links {
+                display: block;
+            }
+            .hero-content h1 {
+                font-size: 3.75rem;
+            }
+            .hero-content p {
+                font-size: 1.5rem;
+            }
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .footer-content {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .footer-links {
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="nav-content">
+                <div class="nav-logo">
+                    <span>AI Freelance-Marketplace</span>
+                </div>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="nav-links">
+                    <a href="/">Home</a>
+                    <a href="/about">About</a>
+                    <a href="/services">Services</a>
+                    <a href="/contact">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+        <main class="flex-grow">
+            <section class="hero-section">
+                <div class="container">
+                    <div class="hero-content">
+                        <h1>Welcome to AI-Driven Freelancing</h1>
+                        <p>Experience the future of work with our innovative AI-powered freelance marketplace. Connect with top talent, find exciting projects, and achieve your goals faster than ever before.</p>
+                        <a href="{% url 'home' %}"class="hero-button">Explore More</a>
+                    </div>
+                </div>
+            </section>
+
+
+            <section class="features">
+                <div class="container">
+                    <h2>Why Choose Us?</h2>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🤖</div>
+                            <h3 class="feature-title">AI-Powered Matching</h3>
+                            <p class="feature-description">Our advanced AI algorithms ensure perfect matches between freelancers and projects.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🔒</div>
+                            <h3 class="feature-title">Secure</h3>
+                            <p class="feature-description">Enjoy peace of mind with our secure and transparent system.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🌟</div>
+                            <h3 class="feature-title">24/7 Support</h3>
+                            <p class="feature-description">Our dedicated support team is always ready to assist you, anytime, anywhere.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="trusted-by">
+                <div class="container">
+                    <h3>Trusted by Industry Leaders</h3>
+                    <div class="trusted-logos">
+                        <div class="trusted-logo">
+                            <img src="{% static 'images/Adobe.png' %}" alt="Adobe">
+                        </div>
+                        <div class="trusted-logo">
+                            <img src="{% static 'images/facebook.png' %}" alt="Facebook">
+                        </div>
+                        <div class="trusted-logo">
+                            <img src="{% static 'images/delloitee.png' %}" alt="Deloitte">
+                        </div>
+                        <div class="trusted-logo">
+                            <img src="{% static 'images/ibm.png' %}" alt="IBM">
+                        </div>
+                        
+                        <div class="trusted-logo">
+                            <img src="{% static 'images/google.png' %}" alt="IBM">
+                        </div>
+                        <div class="trusted-logo">
+                            <img src="{% static 'images/accenture.png' %}" alt="IBM">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        
+    
+        <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
+        <script src="https://files.bpcontent.cloud/2024/11/27/20/20241127203615-HGXPW2AG.js"></script>
+            
+        
+
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div>
+                        <p>&copy; 2024 AI Freelance Marketplace. All Rights Reserved.</p>
+                    </div>
+                    <div class="footer-links">
+                        <a href="/privacy">Privacy Policy   |</a>
+                        <a href="/terms">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            let isMenuOpen = false;
+    
+            function toggleMenu(event) {
+                if (event) {
+                    event.stopPropagation();
+                }
+                isMenuOpen = !isMenuOpen;
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('active');
+                
+                // Force repaint
+                if (isMenuOpen) {
+                    navLinks.style.display = 'flex';
+                } else {
+                    navLinks.style.display = '';
+                }
+            }
+    
+            hamburger.addEventListener('click', toggleMenu);
+    
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (isMenuOpen && !navLinks.contains(event.target) && !hamburger.contains(event.target)) {
+                    toggleMenu();
+                }
+            });
+    
+            // Prevent menu close when clicking inside nav-links
+            navLinks.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+    
+            // Close menu after clicking a link
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) {
+                        toggleMenu();
+                    }
+                });
+            });
+    
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    navLinks.style.display = '';
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    isMenuOpen = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

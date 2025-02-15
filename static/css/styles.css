@@ -1,0 +1,130 @@
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Navbar Styles */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: #48063a;
+}
+ 
+/* Home Page Styles */
+.jumbotron {
+    background-color: #f8f9fa;
+    padding: 4rem 2rem;
+    margin-bottom: 2rem;
+    border-radius: 0.3rem;
+}
+
+/* Project List Styles */
+.card {
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Project Detail Styles */
+.project-details .card {
+    margin-bottom: 1.5rem;
+}
+
+/* Form Styles */
+form .form-group {
+    margin-bottom: 1rem;
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: #48063a;
+    border-color: #48063a;
+}
+
+.btn-primary:hover {
+    background-color: #851168;
+    border-color: #851168;
+}
+
+/* Footer Styles */
+footer {
+    margin-top: 3rem;
+    padding: 1rem 0;
+    background-color: #f8f9fa;
+    text-align: center;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .jumbotron {
+        padding: 2rem 1rem;
+    }
+}
+
+/* ... (previous styles remain unchanged) ... */
+
+/* Login and Register Page Styles */
+.card {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card-title {
+    color: #48063a;
+}
+
+/* Profile Page Styles */
+.profile-picture {
+    border: 3px solid #851168;
+}
+
+.list-group-item strong {
+    color: #48063a;
+}
+
+/* Create Project Page Styles */
+.form-group label {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .profile-sidebar {
+        margin-bottom: 2rem;
+    }
+}
+
+.notification-scroll-container {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.notification-scroll-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notification-scroll-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.notification-scroll-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.notification-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

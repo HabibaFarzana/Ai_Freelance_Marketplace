@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Bar</title>
+    <style>
+        .search-form {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .search-container {
+            position: relative;
+        }
+        .search-input {
+            width: 100%;
+            padding: 10px 40px 10px 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .search-button {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            padding: 0 15px;
+            background: #f8f9fa;
+            border: none;
+            border-left: 1px solid #ccc;
+            cursor: pointer;
+        }
+        .search-button:hover {
+            background: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <form class="search-form" method="GET" action="{% url 'search' %}">
+        <div class="search-container">
+            <input type="text" name="q" class="search-input" placeholder="{% if user.is_freelancer %}Search for projects...{% else %}Search...{% endif %}" required>
+            <button type="submit" class="search-button">
+                <img src="{% static 'images/search-icon.svg' %}" alt="Search" width="20" height="20">
+            </button>
+        </div>
+    </form>
+</body>
+</html>

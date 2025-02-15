@@ -1,0 +1,5 @@
+{% for notification in notifications %}
+    <li><a class="dropdown-item" href="#">{{ notification.message }}</a></li>
+{% empty %}
+    <li><a class="dropdown-item" href="#">No new notifications</a></li>
+{% endfor %}

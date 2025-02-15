@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<style>
+    .conversations-container {
+        max-width: 800px;
+        margin: 20px auto;
+    }
+
+    .conversation-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .conversation-item {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border: 1px solid #dee2e6;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        background: white;
+        transition: all 0.3s ease;
+    }
+
+    .conversation-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .conversation-content {
+        flex: 1;
+        padding: 0 15px;
+    }
+
+    .conversation-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .delete-button {
+        background: none;
+        border: none;
+        color: #dc3545;
+        cursor: pointer;
+        padding: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .delete-button:hover {
+        color: #bd2130;
+    }
+
+    .no-conversations {
+        text-align: center;
+        padding: 40px;
+        background: white;
+        border-radius: 8px;
+        border: 2px dashed #dee2e6;
+    }
+
+    .unread-badge {
+        background-color: #007bff;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 8px;
+        font-size: 0.75rem;
+        margin-left: 8px;
+    }
+
+    .last-message {
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-top: 4px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="conversations-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Your Conversations</h2>
+        <a href="{% url 'user_list' %}" class="btn btn-primary">Start New Chat</a>
+    </div>
+
+    {% if conversations %}
+        <ul class="conversation-list">
+            {% for conversation in conversations %}
+                <li class="conversation-item">
+                    <div class="conversation-content">
+                        <div class="d-flex align-items-center">
+                            <h5 class="mb-0">{{ conversation.other_participant.username }}</h5>
+                            {% if conversation.unread_count > 0 %}
+                                <span class="unread-badge">{{ conversation.unread_count }}</span>
+                            {% endif %}
+                        </div>
+                        {% with last_message=conversation.messages.last %}
+                            {% if last_message %}
+                                <div class="last-message">
+                                    {% if last_message.sender == request.user %}
+                                        You: 
+                                    {% endif %}
+                                    {{ last_message.content|truncatechars:50 }}
+                                    <small class="text-muted">· {{ last_message.timestamp|timesince }} ago</small>
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                    <div class="conversation-actions">
+                        <a href="{% url 'conversation' conversation.id %}" 
+                           class="btn btn-outline-primary btn-sm">Open Chat</a>
+                        <form method="post" action="{% url 'delete_conversation' conversation.id %}" 
+                              class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="delete-button" 
+                                    onclick="return confirm('Are you sure you want to delete this conversation?')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <div class="no-conversations">
+            <p class="mb-3">No conversations yet.</p>
+            <a href="{% url 'user_list' %}" class="btn btn-primary">Start a Conversation</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

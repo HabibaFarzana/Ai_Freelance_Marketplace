@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">{{ user.username }}</h2>
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="img-fluid rounded-circle mb-3">
+                    {% endif %}
+                    <p><strong>Full Name:</strong> {{ user.full_name }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Location:</strong> {{ user.location }}</p>
+                    <p><strong>Company:</strong> {{ profile.company_name }}</p>
+                    <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title">About</h3>
+                    <p>{{ user.bio }}</p>
+                    <h4>Company Description</h4>
+                    <p>{{ profile.description }}</p>
+                </div>
+            </div>
+            <!-- <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Posted Projects</h3>
+                    {% if user.posted_projects.all %}
+                        <ul class="list-group">
+                            {% for project in user.posted_projects.all %}
+                                <li class="list-group-item">
+                                    <h5>{{ project.title }}</h5>
+                                    <p>{{ project.description|truncatewords:30 }}</p>
+                                    <small class="text-muted">Status: {{ project.get_status_display }}</small>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No projects posted yet.</p>
+                    {% endif %}
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Freelancer Dashboard</h2>
+    
+    <!-- Projects you're hired for -->
+    <div class="mb-5">
+        <h3>Projects You're Hired For</h3>
+        {% if hired_projects %}
+            <div class="list-group">
+                {% for project in hired_projects %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ project.title }}</h5>
+                            <span class="badge {% if project.status == 'hired' %}bg-info{% elif project.status == 'just_started' %}bg-primary{% elif project.status == 'intermediate' %}bg-warning{% elif project.status == 'completed' %}bg-success{% endif %}">
+                                {{ project.get_status_display }}
+                            </span>
+                        </div>
+                        <p class="mb-1">{{ project.description|truncatewords:20 }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small>
+                                <strong>Client:</strong> {{ project.client.username }} |
+                                <strong>Budget:</strong> ${{ project.budget }} |
+                                <strong>Deadline:</strong> {{ project.deadline|date }}
+                            </small>
+                        </div>
+                        <div class="mt-2">
+                            <a href="{% url 'project_detail' project.id %}" class="btn btn-primary btn-sm">View Details</a>
+                            {% if project.status == 'hired' %}
+                                <form method="post" action="{% url 'start_project' project.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success btn-sm">Start Project</button>
+                                </form>
+                            {% elif project.status in 'just_started,intermediate' %}
+                                <a href="{% url 'update_project_status' project.id %}" class="btn btn-info btn-sm">Update Status</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                You haven't been hired for any projects yet. Keep submitting quality bids to increase your chances!
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="mb-5">
+        <h3>Recommended Projects</h3>
+        {% if recommended_projects %}
+            <div class="list-group">
+                {% for recommendation in recommended_projects %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ recommendation.project.title }}</h5>
+                            <span class="badge bg-info">Recommended</span>
+                        </div>
+                        <p class="mb-1">{{ recommendation.project.description|truncatewords:20 }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small>
+                                <strong>Budget:</strong> ${{ recommendation.project.budget }} |
+                                <strong>Deadline:</strong> {{ recommendation.project.deadline|date }}
+                            </small>
+                        </div>
+                        <p><strong>Required Skills:</strong> {{ recommendation.project.required_skills }}</p>
+                        <p><strong>Matching skills:</strong> {{ recommendation.matching_skills|join:", " }}</p>
+                        <div class="mt-2">
+                            <a href="{% url 'project_detail' recommendation.project.id %}" class="btn btn-primary btn-sm">View Details</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                No recommended projects at the moment. Update your skills to get more recommendations!
+            </div>
+        {% endif %}
+    </div>
+
+
+    <!-- Projects you've bid on -->
+    <div class="mb-5">
+        <h3>Your Active Bids</h3>
+        {% if bid_projects %}
+            <div class="list-group">
+                {% for project in bid_projects %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ project.title }}</h5>
+                            <span class="badge bg-info">Bid Submitted</span>
+                        </div>
+                        <p class="mb-1">{{ project.description|truncatewords:20 }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small>
+                                <strong>Client:</strong> {{ project.client.username }} |
+                                <strong>Budget:</strong> ${{ project.budget }} |
+                                <strong>Deadline:</strong> {{ project.deadline|date }}
+                            </small>
+                        </div>
+                        <div class="mt-2">
+                            <a href="{% url 'project_detail' project.id %}" class="btn btn-primary btn-sm">View Details</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                You haven't submitted any bids yet. Browse available projects to find work that matches your skills!
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Quick Actions</h3>
+            <div class="d-grid gap-2">
+                <a href="{% url 'project_list' %}" class="btn btn-primary">Browse Available Projects</a>
+                <a href="{% url 'edit_profile' %}" class="btn btn-secondary">Update Profile</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .badge {
+        font-size: 0.9em;
+        padding: 8px 12px;
+    }
+    .list-group-item {
+        border-left: none;
+        border-right: none;
+    }
+    .list-group-item:first-child {
+        border-top: none;
+    }
+    .list-group-item:last-child {
+        border-bottom: none;
+    }
+    .alert {
+        border-radius: 8px;
+        padding: 1rem;
+    }
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        border-radius: 0.4rem;
+    }
+</style>
+{% endblock %}
+

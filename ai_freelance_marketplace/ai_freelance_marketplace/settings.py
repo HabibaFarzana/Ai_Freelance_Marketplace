@@ -13,7 +13,6 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
-    '*',
 ]
 
 CSRF_TRUSTED_ORIGINS = ['https://*.ngrok-free.app']
@@ -41,8 +40,8 @@ INSTALLED_APPS = [
     # Local apps
     'accounts',
     'projects',
-    # 'ai_features',
-    # 'api',
+    'ai_features',
+    'api',
     'messaging',
     'file_management',
     'user_notifications',
@@ -86,11 +85,11 @@ ASGI_APPLICATION = 'ai_freelance_marketplace.asgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ai_freelance_marketplace3',
-        'USER': 'User_name',
-        'PASSWORD': 'Your_password',
+        'NAME': 'your_database_name',
+        'USER': 'user_name',
+        'PASSWORD': 'your_password',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': 'your_port_number',
     }
 }
 

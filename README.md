@@ -28,7 +28,7 @@ AI Freelance Marketplace is a Django-based web application that connects freelan
 ## Installation
 
 1. Clone the repository:
-git clone [https://github.com/your-username/ai-freelance-marketplace.git](https://github.com/your-username/ai-freelance-marketplace.git)
+git clone (https://github.com/your-username/ai-freelance-marketplace.git)
 cd ai-freelance-marketplace
 
 

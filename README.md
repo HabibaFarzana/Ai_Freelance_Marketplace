@@ -23,7 +23,7 @@ AI Freelance Marketplace is a Django-based web application that connects freelan
 - HTML/CSS
 - JavaScript
 - Bootstrap 5
-- Django Channels (for WebSocket support)
+- Django Channels
 
 ## Installation
 
